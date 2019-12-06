@@ -1,9 +1,11 @@
 package com.example.xinshuo3.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -13,6 +15,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.xinshuo3.R;
+import com.example.xinshuo3.paring;
 
 public class HomeFragment extends Fragment {
 
@@ -30,6 +33,12 @@ public class HomeFragment extends Fragment {
                 textView.setText(s);
             }
         });
+        Button paring = root.findViewById(R.id.startParing);
+        paring.setOnClickListener(unused -> topair());
         return root;
+    }
+    protected void topair() {
+        Intent intent = new Intent(getActivity(), paring.class);
+        startActivity(intent);
     }
 }
