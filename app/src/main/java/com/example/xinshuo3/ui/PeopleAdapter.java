@@ -1,6 +1,7 @@
 package com.example.xinshuo3.ui;
 
 import android.content.Context;
+import android.icu.text.Transliterator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,8 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         People peopleList = mPeopleList.get(position);
+        System.out.println(position + " " + holder);
+
         holder.name.append(peopleList.getUsername());
         holder.major.append(peopleList.getMajor());
         holder.firstCourse.append(peopleList.getFirst_course());
@@ -59,9 +62,9 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
         public ViewHolder(View peopleList) {
             super(peopleList);
             score = peopleList.findViewById(R.id.score);
-            firstCourse = peopleList.findViewById(R.id.first_course);
-            secondCourse = peopleList.findViewById(R.id.second_course);
-            thirdCourse = peopleList.findViewById(R.id.third_course);
+            firstCourse = peopleList.findViewById(R.id.firstCourse);
+            secondCourse = peopleList.findViewById(R.id.secondCourse);
+            thirdCourse = peopleList.findViewById(R.id.thirdCourse);
             name = peopleList.findViewById(R.id.name);
             major = peopleList.findViewById(R.id.major);
         }
