@@ -1,4 +1,4 @@
-package com.example.xinshuo3.ui.dashboard;
+package com.example.xinshuo3;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

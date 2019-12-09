@@ -1,14 +1,14 @@
-package com.example.xinshuo3.ui.home;
+package com.example.xinshuo3;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HomeViewModel extends ViewModel {
+public class NotificationsViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public HomeViewModel() {
+    public NotificationsViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("");
     }

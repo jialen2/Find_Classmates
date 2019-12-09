@@ -1,4 +1,4 @@
-package com.example.xinshuo3.ui.dashboard;
+package com.example.xinshuo3;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,11 +12,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.xinshuo3.R;
+import java.util.List;
 
 public class DashboardFragment extends Fragment {
 
     private DashboardViewModel dashboardViewModel;
+    public static List<People> peopleList;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
