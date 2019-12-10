@@ -39,8 +39,6 @@ public class NotificationsFragment extends Fragment {
 
     private TextInputLayout username;
 
-    private TextView showUsername;
-
     private EditText password;
 
     private ConstraintLayout login;
@@ -61,7 +59,6 @@ public class NotificationsFragment extends Fragment {
                 ViewModelProviders.of(this).get(NotificationsViewModel.class);
         root = inflater.inflate(R.layout.fragment_notifications, container, false);
         final TextView textView = root.findViewById(R.id.text_notifications);
-        showUsername = root.findViewById(R.id.showUsername);
         login = root.findViewById(R.id.toLogin);
         loggedIn = root.findViewById(R.id.loginSuccess);
         username = login.findViewById(R.id.username);
@@ -80,7 +77,6 @@ public class NotificationsFragment extends Fragment {
                 if (selectedItem.equals("Log out")) {
                     loggedIn.setVisibility(View.GONE);
                     login.setVisibility(View.VISIBLE);
-                    showUsername.setText(Savedata.currentName);
                     password.setText("");
                     SigninOrnot = false;
                 } else if (selectedItem.equals("Manage Your Profile")) {
@@ -132,7 +128,6 @@ public class NotificationsFragment extends Fragment {
                 SigninOrnot = true;
                 Toast.makeText(getActivity(), "You have successfully signed in", Toast.LENGTH_SHORT).show();
                 loggedIn.setVisibility(View.VISIBLE);
-                showUsername.setText(getUsername);
                 login.setVisibility(View.GONE);
                 //getActivity().finish();
             }
