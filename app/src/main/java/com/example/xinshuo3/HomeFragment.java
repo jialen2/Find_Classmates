@@ -49,7 +49,7 @@ public class HomeFragment extends Fragment {
         });
         Button paring = root.findViewById(R.id.startParing);
         weak_subject = root.findViewById(R.id.weakSubject);
-        paring.setOnClickListener(unused -> topair());
+            paring.setOnClickListener(unused -> topair());
         return root;
     }
     protected void topair() {
@@ -59,6 +59,7 @@ public class HomeFragment extends Fragment {
         getWeak = weak_subject.getEditText().getText().toString().trim().replace(" ", "");
         if (getWeak == null || getWeak.length() == 0) {
             Toast.makeText(getActivity(), "Subject blank should not be left empty", Toast.LENGTH_SHORT).show();
+            return;
         }
         SQLiteDatabase data = db.getWritableDatabase();
         Cursor cursor = data.rawQuery("select * from registerusers",null);
@@ -71,15 +72,17 @@ public class HomeFragment extends Fragment {
                 if (getWeak.equals(cursor.getString(cursor.getColumnIndex("first_course")).trim().replace(" ", ""))
                 || getWeak.equals(cursor.getString(cursor.getColumnIndex("second_course")).trim().replace(" ", ""))
                 || getWeak.equals(cursor.getString(cursor.getColumnIndex("third_course")).trim().replace(" ", ""))) {
-                    people[count] = cursor.getString(cursor.getColumnIndex("username"));
-                    System.out.println("find " + cursor.getString(cursor.getColumnIndex("username")));
-                    count++;
+                    if (!(cursor.getString(cursor.getColumnIndex("username")).trim().replace(" ", "").equals(Savedata.currentName))){
+                        people[count] = cursor.getString(cursor.getColumnIndex("username"));
+                        count++;
+                    }
                 }
                 cursor.moveToNext();
             }
         }
-        if (people == null || people.length == 0) {
+        if (people == null || people.length == 0 || people[0] == null) {
             Toast.makeText(getActivity(), "Appropriate match was not found", Toast.LENGTH_SHORT).show();
+            return;
         } else {
             intent.putExtra("People", people);
             startActivity(intent);

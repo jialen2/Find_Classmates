@@ -4,16 +4,13 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.xinshuo3.ui.PeopleAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +24,8 @@ public class Paring extends AppCompatActivity {
     private String third_course;
     private RecyclerView peopleRecyclerView;
     private PeopleAdapter peopleAdapter;
+    private CardView chunk_people;
+    private LinearLayout people_layout;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
@@ -53,18 +52,25 @@ public class Paring extends AppCompatActivity {
             first_course = cursor.getString(cursor.getColumnIndex("first_course"));
             second_course = cursor.getString(cursor.getColumnIndex("second_course"));
             third_course = cursor.getString(cursor.getColumnIndex("third_course"));
-            People newpeople = new People(User, major, grade, first_course, second_course, third_course, "0");
+            People newpeople = new People(User, major, grade, first_course, second_course, third_course);
             peopleList.add(newpeople);
-            System.out.println(cursor.getString(cursor.getColumnIndex("username")));
-            System.out.println(cursor.getString(cursor.getColumnIndex("major")));
-            System.out.println(cursor.getString(cursor.getColumnIndex("first_course")));
-            System.out.println(cursor.getString(cursor.getColumnIndex("second_course")));
-            System.out.println(cursor.getString(cursor.getColumnIndex("third_course")));
-
         }
         peopleRecyclerView = findViewById(R.id.recyclerView);
         peopleRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         peopleAdapter = new PeopleAdapter(peopleList, this);
         peopleRecyclerView.setAdapter(peopleAdapter);
+        //PeopleAdapter.ViewHolder newone = peopleAdapter.onCreateViewHolder(peopleRecyclerView, 0);
+        //newone.getName().
+        //people_layout = findViewById(R.id.people);
+        //peopleAdapter.ViewHolder
+        //tocontact.setOnClickListener(unused -> contact());
+    }
+
+    public void contact() {
+        DashboardFragment fragment = new DashboardFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.recyclerView, fragment);
+        transaction.commit();
+        finish();
     }
 }

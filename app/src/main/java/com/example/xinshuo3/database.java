@@ -17,7 +17,7 @@ public class database extends SQLiteOpenHelper {
     private static final String TABLE_NAME = "registerusers";
     public database(Context context) { super(context, DATABASE_NAME, null, 1);}
     public void onCreate(SQLiteDatabase database) {
-        database.execSQL("Create Table registerusers (ID INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, major TEXT, grade TEXT, first_course TEXT, second_course TEXT, third_course TEXT)");
+        database.execSQL("Create Table registerusers (ID INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, major TEXT, grade TEXT, first_course TEXT, second_course TEXT, third_course TEXT, contacts TEXT)");
     }
     public void onUpgrade(SQLiteDatabase database, int i, int j) {
         database.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
@@ -34,6 +34,8 @@ public class database extends SQLiteOpenHelper {
         values.put("first_course", first_course);
         values.put("second_course", second_course);
         values.put("third_course", third_course);
+        values.put("contacts", "");
+        //values.put
         long res = db.insert(TABLE_NAME, null, values);
         System.out.println("saved");
         db.close();
@@ -42,7 +44,7 @@ public class database extends SQLiteOpenHelper {
 
     public Cursor fetch() {
         db = this.getWritableDatabase();
-        Cursor cursor = this.db.query(TABLE_NAME, new String[]{"username", "password", "major", "grade", "first_course", "second_course", "third_course"}, null, null, null, null, null);
+        Cursor cursor = this.db.query(TABLE_NAME, new String[]{"username", "password", "major", "grade", "first_course", "second_course", "third_course", "contacts"}, null, null, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
         }
@@ -77,4 +79,5 @@ public class database extends SQLiteOpenHelper {
         }
         return count;
     }
+
 }

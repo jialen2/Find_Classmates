@@ -7,8 +7,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +27,8 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class NotificationsFragment extends Fragment {
@@ -33,15 +39,19 @@ public class NotificationsFragment extends Fragment {
 
     private TextInputLayout username;
 
+    private TextView showUsername;
+
     private EditText password;
+
+    private ConstraintLayout login;
+
+    private ConstraintLayout loggedIn;
 
     private database db;
 
     private NotificationsViewModel notificationsViewModel;
 
     private View root;
-
-    public NotificationsFragment() {}
 
     private static boolean SigninOrnot = false;
 
@@ -50,22 +60,41 @@ public class NotificationsFragment extends Fragment {
         notificationsViewModel =
                 ViewModelProviders.of(this).get(NotificationsViewModel.class);
         root = inflater.inflate(R.layout.fragment_notifications, container, false);
-        ConstraintLayout tologin = root.findViewById(R.id.toLogin);
-        ConstraintLayout loggedin = root.findViewById(R.id.loginSuccess);
-        if (SigninOrnot == false) {
-            tologin.setVisibility(View.VISIBLE);
-        } else {
-            loggedin.setVisibility(View.VISIBLE);
-        }
         final TextView textView = root.findViewById(R.id.text_notifications);
-        notificationsViewModel.getText().observe(this, new Observer<String>() {
+        showUsername = root.findViewById(R.id.showUsername);
+        login = root.findViewById(R.id.toLogin);
+        loggedIn = root.findViewById(R.id.loginSuccess);
+        username = login.findViewById(R.id.username);
+        password = login.findViewById(R.id.password);
+        ListView option = root.findViewById(R.id.options);
+        String[] options = new String[] {"Manage Your Profile", "Log out"};
+        List<String> options_list = new ArrayList<String>(Arrays.asList(options));
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>
+                (getActivity(), android.R.layout.simple_list_item_1, options_list);
+        option.setAdapter(arrayAdapter);
+        option.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Get the selected item text from ListView
+                String selectedItem = (String) parent.getItemAtPosition(position);
+                if (selectedItem.equals("Log out")) {
+                    loggedIn.setVisibility(View.GONE);
+                    login.setVisibility(View.VISIBLE);
+                    showUsername.setText(Savedata.currentName);
+                    password.setText("");
+                    SigninOrnot = false;
+                } else if (selectedItem.equals("Manage Your Profile")) {
+                    Intent intent = new Intent(getActivity(), ManageProfile.class);
+                    startActivity(intent);
+                    //getActivity().finish();
+                }
             }
         });
-        username = tologin.findViewById(R.id.username);
-        password = tologin.findViewById(R.id.password);
+        if (SigninOrnot == false) {
+            login.setVisibility(View.VISIBLE);
+        } else {
+            loggedIn.setVisibility(View.VISIBLE);
+        }
         db = new database(getActivity());
         Button creatAccount = root.findViewById(R.id.createAccount);
         creatAccount.setOnClickListener(unused -> create());
@@ -87,6 +116,7 @@ public class NotificationsFragment extends Fragment {
     }
     protected void signIn() {
         getUsername = username.getEditText().getText().toString().trim().replace(" ", "");
+        Savedata.currentName = getUsername;
         getPassword = password.getText().toString().trim().replace(" ", "");
         //Intent intent = new Intent(getActivity(), HomeFragment.class);
         SQLiteDatabase data = db.getWritableDatabase();
@@ -99,14 +129,11 @@ public class NotificationsFragment extends Fragment {
                 Toast.makeText(getActivity(),"Password Not matching",Toast.LENGTH_SHORT).show();
                 password.setText("");
             } else {
-                HomeFragment fragment = new HomeFragment();
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.totest, fragment);
                 SigninOrnot = true;
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
                 Toast.makeText(getActivity(), "You have successfully signed in", Toast.LENGTH_SHORT).show();
+                loggedIn.setVisibility(View.VISIBLE);
+                showUsername.setText(getUsername);
+                login.setVisibility(View.GONE);
                 //getActivity().finish();
             }
         } else {
@@ -114,4 +141,5 @@ public class NotificationsFragment extends Fragment {
         }
 
     }
+
 }

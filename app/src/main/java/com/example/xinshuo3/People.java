@@ -9,17 +9,13 @@ public class People {
     private String second_course;
     private String third_course;
     public People(String setUsername, String setMajor, String setGrade, String setFirst_course,
-                  String setSecond_course, String setThird_course, String setScore) {
-        score = setScore;
+                  String setSecond_course, String setThird_course) {
         username = setUsername;
         major = setMajor;
         grade = setGrade;
         first_course = setFirst_course;
         second_course = setSecond_course;
         third_course = setThird_course;
-    }
-    public String getScore() {
-        return score;
     }
 
     public String getUsername() {
